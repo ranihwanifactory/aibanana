@@ -47,9 +47,10 @@ export const generateOrEditImage = async (
 
     // Parse response to find the image part
     const candidates = response.candidates;
-    if (candidates && candidates.length > 0) {
-      const parts = candidates[0].content.parts;
-      for (const part of parts) {
+    const responseParts = candidates?.[0]?.content?.parts;
+
+    if (responseParts) {
+      for (const part of responseParts) {
         if (part.inlineData && part.inlineData.data) {
           const mimeType = part.inlineData.mimeType || 'image/png';
           return `data:${mimeType};base64,${part.inlineData.data}`;
