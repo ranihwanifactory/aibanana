@@ -1,0 +1,5 @@
+{
+  "name": "바나나 비전 스튜디오",
+  "description": "Gemini 2.5 Flash 기반의 강력한 AI 이미지 스튜디오입니다. 텍스트로 멋진 이미지를 생성하거나 자연어 프롬프트로 기존 사진을 편집해보세요.",
+  "requestFramePermissions": []
+}
