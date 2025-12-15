@@ -68,9 +68,18 @@ const App: React.FC = () => {
     } catch (error: any) {
       console.error(error);
       let msg = "오류가 발생했습니다. 다시 시도해주세요.";
-      if (error.message && error.message.includes("400")) {
+      
+      // Ensure we catch the error message even if it is a stringified JSON object
+      const errorMessage = error.message || JSON.stringify(error);
+      
+      if (errorMessage.includes("429") || errorMessage.includes("Quota") || errorMessage.includes("quota") || errorMessage.includes("RESOURCE_EXHAUSTED")) {
+        msg = "현재 이용량이 많아 제한되었습니다. 약 1분 후 다시 시도해주세요.";
+      } else if (errorMessage.includes("400")) {
         msg = "요청이 거부되었습니다. 지원하지 않는 콘텐츠 유형일 수 있습니다.";
+      } else if (errorMessage.includes("503")) {
+        msg = "서비스가 일시적으로 불안정합니다. 잠시 후 다시 시도해주세요.";
       }
+      
       addToast('error', msg);
     } finally {
       setIsLoading(false);
@@ -246,7 +255,7 @@ const App: React.FC = () => {
                        <img 
                         src={resultImage} 
                         alt="Generated Result" 
-                        className="max-w-full max-h-full rounded-lg shadow-lg object-contain animate-fade-in bg-white" // added bg-white to img just in case transparency looks weird
+                        className="max-w-full max-h-full rounded-lg shadow-lg object-contain animate-fade-in bg-white" 
                       />
                       <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
                          <button 
